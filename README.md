@@ -40,6 +40,14 @@ import DuoShuo from 'DuoShuo';
          title="your-data-title"/>
 ```
 
+## Properties
+
+``` javascript
+thread: React.PropTypes.string  // DuoShuo data-thread-key
+title: React.PropTypes.string   // DuoShuo data-title
+url: React.PropTypes.string     // DuoShuo data-url
+```
+
 # License
 
 MIT
