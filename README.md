@@ -1,4 +1,4 @@
-# react-duoshuo
+# react-duoshuo2
 A DuoShuo component for React.
 
 ## Installation
