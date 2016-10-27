@@ -33,7 +33,7 @@ In `index.html` :
 Then:
 
 ``` javascript
-import DuoShuo from 'DuoShuo';
+import DuoShuo from 'react-duoshuo2';
 
 <DuoShuo thread="your-data-thread-key"
          url="your-data-url"

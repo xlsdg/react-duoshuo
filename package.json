@@ -2,10 +2,9 @@
   "name": "react-duoshuo2",
   "title": "react-duoshuo2",
   "description": "A DuoShuo component for React",
-  "version": "0.0.1",
-  "main": "lib/index.js",
+  "version": "0.0.2",
+  "main": "lib/DuoShuo.jsx",
   "files": [
-    "lib/index.js",
     "lib/DuoShuo.jsx"
   ],
   "homepage": "https://github.com/xlsdg/react-duoshuo",
@@ -18,6 +17,7 @@
     "react",
     "duoshuo",
     "react-duoshuo",
+    "react-duoshuo2",
     "library"
   ],
   "bugs": {
