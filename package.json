@@ -1,0 +1,33 @@
+{
+  "name": "react-duoshuo2",
+  "title": "react-duoshuo2",
+  "description": "A DuoShuo component for React",
+  "version": "0.0.1",
+  "main": "lib/index.js",
+  "files": [
+    "lib/index.js",
+    "lib/DuoShuo.jsx"
+  ],
+  "homepage": "https://github.com/xlsdg/react-duoshuo",
+  "author": "xLsDg <xlsdg@qq.com> (https://blog.xlsdg.org/)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xlsdg/react-duoshuo.git"
+  },
+  "keywords": [
+    "react",
+    "duoshuo",
+    "react-duoshuo",
+    "library"
+  ],
+  "bugs": {
+    "url": "https://github.com/xlsdg/react-duoshuo/issues"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
+  },
+  "devDependencies": {},
+  "scripts": {}
+}
