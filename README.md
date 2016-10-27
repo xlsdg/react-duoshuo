@@ -13,21 +13,21 @@ $ npm install xlsdg/react-duoshuo2 --save
 In `index.html` :
 
 ``` html
-    <!DOCTYPE html>
-    <html lang="zh-CN">
-    <head>
-      <meta charset="UTF-8">
-      <title>Demo</title>
-      <link rel="stylesheet" href="index.css" />
-      <script>var duoshuoQuery = {short_name:"your-short-name"};</script>
-      <script src="http://static.duoshuo.com/embed.js" async></script>
-    </head>
-    <body>
-      <div id="root"></div>
-      <script src="common.js"></script>
-      <script src="index.js"></script>
-    </body>
-    </html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Demo</title>
+  <link rel="stylesheet" href="index.css" />
+  <script>var duoshuoQuery = {short_name:"your-short-name"};</script>
+  <script src="http://static.duoshuo.com/embed.js" async></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="common.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>
 ```
 
 Then:
