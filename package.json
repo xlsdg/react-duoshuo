@@ -2,7 +2,7 @@
   "name": "react-duoshuo2",
   "title": "react-duoshuo2",
   "description": "A DuoShuo component for React",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "main": "lib/DuoShuo.jsx",
   "files": [
     "lib/DuoShuo.jsx"
