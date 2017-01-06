@@ -7,61 +7,114 @@ class DuoShuo extends React.Component {
     super(props);
     this.state = {};
     this._init = this._init.bind(this);
+    this._inject = this._inject.bind(this);
+  }
+  _inject() {
+    const that = this;
+    // console.log('_inject');
+    if (!window.duoshuoQuery || !window.duoshuoQuery.short_name) {
+      window.duoshuoQuery = {
+        short_name: that.props.domain
+      };
+    } else if (window.duoshuoQuery.short_name !== that.props.domain) {
+      window.duoshuoQuery.short_name = that.props.domain;
+    }
+
+    if (!window.DUOSHUO) {
+      const ds = document.createElement('script');
+      ds.type = 'text/javascript';
+      ds.async = true;
+      ds.src = `//static.duoshuo.com/embed.js?_t=${(new Date()).getTime()}`;
+      ds.charset = 'UTF-8';
+      if (ds.readyState) {
+        ds.onreadystatechange = function() {
+          if (this.readyState === 'complete') {
+            ds.onreadystatechange = null;
+            that._init();
+          }
+        };
+      } else {
+        ds.onload = function() {
+          ds.onload = null;
+          that._init();
+        };
+      }
+      that.dom = ds;
+      const s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(ds, s);
+    }
   }
   _init() {
+    const that = this;
     // console.log('_init');
-    let that = this;
-    window.DUOSHUO.EmbedThread(ReactDOM.findDOMNode(that));
+    if (window.DUOSHUO && window.DUOSHUO.EmbedThread) {
+      window.DUOSHUO.EmbedThread(ReactDOM.findDOMNode(that));
+    }
   }
   componentWillMount() {
-    // console.log('componentWillMount');
+    const that = this;
+    // console.log('componentWillMount', that.props, that.state);
+    if (that.props.domain) {
+      that._inject();
+    }
   }
   componentDidMount() {
-    // console.log('componentDidMount');
-    if (this.props.thread) {
-      this._init();
+    const that = this;
+    // console.log('componentDidMount', that.props, that.state);
+    if (that.props.thread) {
+      that._init();
     }
   }
   componentWillReceiveProps(nextProps) {
-    // console.log('componentWillReceiveProps', nextProps);
+    // const that = this;
+    // console.log('componentWillReceiveProps', that.props, nextProps);
   }
   shouldComponentUpdate(nextProps, nextState) {
-    // console.log('shouldComponentUpdate', nextProps, nextState);
-    return nextProps.thread !== this.props.thread;
+    const that = this;
+    // console.log('shouldComponentUpdate', that.props, nextProps, that.state, nextState);
+    return nextProps.thread !== that.props.thread;
   }
   componentWillUpdate(nextProps, nextState) {
-    // console.log('componentWillUpdate', nextProps, nextState);
+    // const that = this;
+    // console.log('componentWillUpdate', that.props, nextProps, that.state, nextState);
   }
   componentDidUpdate(prevProps, prevState) {
-    // console.log('componentDidUpdate', prevProps, prevState);
-    if (this.props.thread) {
-      this._init();
+    const that = this;
+    // console.log('componentDidUpdate', prevProps, that.props, prevState, that.state);
+    if (that.props.thread) {
+      that._init();
     }
   }
   componentWillUnmount() {
-    // console.log('componentWillUnmount');
+    // const that = this;
+    // console.log('componentWillUnmount', that.props, that.state);
   }
   render() {
+    const that = this;
     // console.log('render');
     return (
       <div
-        key="duo-shuo"
         className="ds-thread"
-        data-thread-key={this.props.thread}
-        data-title={this.props.title}
-        data-url={this.props.url}
+        data-thread-key={that.props.thread}
+        data-title={that.props.title}
+        data-url={that.props.url}
+        data-author-key={that.props.author}
       ></div>
     );
   }
 }
 
 DuoShuo.propTypes = {
-    thread: React.PropTypes.string.isRequired,
-    title: React.PropTypes.string.isRequired,
-    url: React.PropTypes.string.isRequired
+  domain: React.PropTypes.string.isRequired,
+  thread: React.PropTypes.string.isRequired,
+  title: React.PropTypes.string,
+  url: React.PropTypes.string,
+  author: React.PropTypes.string
 };
 
 DuoShuo.defaultProps = {
+  title: window.document.title,
+  url: window.location.href
 };
 
 export default DuoShuo;

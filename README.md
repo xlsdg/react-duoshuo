@@ -19,8 +19,6 @@ In `index.html` :
   <meta charset="UTF-8">
   <title>Demo</title>
   <link rel="stylesheet" href="index.css" />
-  <script>var duoshuoQuery = {short_name:"your-short-name"};</script>
-  <script src="http://static.duoshuo.com/embed.js" async></script>
 </head>
 <body>
   <div id="root"></div>
@@ -35,17 +33,18 @@ Then:
 ``` javascript
 import DuoShuo from 'react-duoshuo2';
 
-<DuoShuo thread="your-data-thread-key"
-         url="your-data-url"
-         title="your-data-title"/>
+<DuoShuo domain="your-short-name"
+  thread="your-data-thread-key" />
 ```
 
 ## Properties
 
 ``` javascript
-thread: React.PropTypes.string  // DuoShuo data-thread-key
-title: React.PropTypes.string   // DuoShuo data-title
-url: React.PropTypes.string     // DuoShuo data-url
+domain: React.PropTypes.string.isRequired // DuoShuo domain-short-name
+thread: React.PropTypes.string.isRequired // DuoShuo data-thread-key
+title:  React.PropTypes.string            // DuoShuo data-title
+url:    React.PropTypes.string            // DuoShuo data-url
+author: React.PropTypes.string            // DuoShuo author-key
 ```
 
 # License
