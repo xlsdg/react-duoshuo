@@ -24,11 +24,10 @@ class DuoShuo extends React.Component {
       const ds = document.createElement('script');
       ds.type = 'text/javascript';
       ds.async = true;
-      ds.src = `//static.duoshuo.com/embed.js?_t=${(new Date()).getTime()}`;
       ds.charset = 'UTF-8';
       if (ds.readyState) {
         ds.onreadystatechange = function() {
-          if (this.readyState === 'complete') {
+          if (ds.readyState === 'loaded' || ds.readyState === 'complete') {
             ds.onreadystatechange = null;
             that._init();
           }
@@ -39,6 +38,7 @@ class DuoShuo extends React.Component {
           that._init();
         };
       }
+      ds.src = `//static.duoshuo.com/embed.js?_t=${(new Date()).getTime()}`;
       that.dom = ds;
       const s = document.getElementsByTagName('script')[0];
       s.parentNode.insertBefore(ds, s);
