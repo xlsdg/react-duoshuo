@@ -24,7 +24,7 @@ class DuoShuo extends React.Component {
       const ds = document.createElement('script');
       ds.type = 'text/javascript';
       ds.async = true;
-      ds.charset = 'UTF-8';
+      ds.charset = 'utf-8';
       if (ds.readyState) {
         ds.onreadystatechange = function() {
           if (ds.readyState === 'loaded' || ds.readyState === 'complete') {
@@ -38,17 +38,20 @@ class DuoShuo extends React.Component {
           that._init();
         };
       }
-      ds.src = `//static.duoshuo.com/embed.js?_t=${(new Date()).getTime()}`;
+      ds.src = `${document.location.protocol}//static.duoshuo.com/embed.js?_t=${(new Date()).getTime()}`;
       that.dom = ds;
       const s = document.getElementsByTagName('script')[0];
       s.parentNode.insertBefore(ds, s);
+    } else {
+      that._init();
     }
   }
   _init() {
     const that = this;
     // console.log('_init');
     if (window.DUOSHUO && window.DUOSHUO.EmbedThread) {
-      window.DUOSHUO.EmbedThread(ReactDOM.findDOMNode(that));
+      that.props.onReady();
+      // window.DUOSHUO.EmbedThread(ReactDOM.findDOMNode(that));
     }
   }
   componentWillMount() {
@@ -109,12 +112,14 @@ DuoShuo.propTypes = {
   thread: React.PropTypes.string.isRequired,
   title: React.PropTypes.string,
   url: React.PropTypes.string,
-  author: React.PropTypes.string
+  author: React.PropTypes.string,
+  onReady: React.PropTypes.func
 };
 
 DuoShuo.defaultProps = {
   title: window.document.title,
-  url: window.location.href
+  url: window.location.href,
+  onReady: function() {}
 };
 
 export default DuoShuo;
