@@ -29,13 +29,13 @@ class DuoShuo extends React.Component {
         ds.onreadystatechange = function() {
           if (ds.readyState === 'loaded' || ds.readyState === 'complete') {
             ds.onreadystatechange = null;
-            that._init();
+            that._init(true);
           }
         };
       } else {
         ds.onload = function() {
           ds.onload = null;
-          that._init();
+          that._init(true);
         };
       }
       ds.src = `${document.location.protocol}//static.duoshuo.com/embed.js?_t=${(new Date()).getTime()}`;
@@ -43,15 +43,17 @@ class DuoShuo extends React.Component {
       const s = document.getElementsByTagName('script')[0];
       s.parentNode.insertBefore(ds, s);
     } else {
-      that._init();
+      that._init(false);
     }
   }
-  _init() {
+  _init(isMounted) {
     const that = this;
     // console.log('_init');
     if (window.DUOSHUO && window.DUOSHUO.EmbedThread) {
       that.props.onReady();
-      // window.DUOSHUO.EmbedThread(ReactDOM.findDOMNode(that));
+      if (isMounted === false) {
+        window.DUOSHUO.EmbedThread(ReactDOM.findDOMNode(that));
+      }
     }
   }
   componentWillMount() {
