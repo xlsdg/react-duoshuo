@@ -5,70 +5,22 @@ class DuoShuo extends React.Component {
   constructor(props) {
     // console.log('constructor', props);
     super(props);
-    this.state = {};
+    this.state = {
+      dom: null,
+      script: null
+    };
     this._init = this._init.bind(this);
-    this._inject = this._inject.bind(this);
-  }
-  _inject() {
-    const that = this;
-    // console.log('_inject');
-    if (!window.duoshuoQuery || !window.duoshuoQuery.short_name) {
-      window.duoshuoQuery = {
-        short_name: that.props.domain
-      };
-    } else if (window.duoshuoQuery.short_name !== that.props.domain) {
-      window.duoshuoQuery.short_name = that.props.domain;
-    }
-
-    if (!window.DUOSHUO) {
-      const ds = document.createElement('script');
-      ds.type = 'text/javascript';
-      ds.async = true;
-      ds.charset = 'utf-8';
-      if (ds.readyState) {
-        ds.onreadystatechange = function() {
-          if (ds.readyState === 'loaded' || ds.readyState === 'complete') {
-            ds.onreadystatechange = null;
-            that._init(true);
-          }
-        };
-      } else {
-        ds.onload = function() {
-          ds.onload = null;
-          that._init(true);
-        };
-      }
-      ds.src = `${document.location.protocol}//static.duoshuo.com/embed.js?_t=${(new Date()).getTime()}`;
-      that.dom = ds;
-      const s = document.getElementsByTagName('script')[0];
-      s.parentNode.insertBefore(ds, s);
-    } else {
-      that._init(false);
-    }
-  }
-  _init(isMounted) {
-    const that = this;
-    // console.log('_init');
-    if (window.DUOSHUO && window.DUOSHUO.EmbedThread) {
-      that.props.onReady();
-      if (isMounted === false) {
-        window.DUOSHUO.EmbedThread(ReactDOM.findDOMNode(that));
-      }
-    }
+    this._ready = this._ready.bind(this);
+    this._destroy = this._destroy.bind(this);
   }
   componentWillMount() {
-    const that = this;
+    // const that = this;
     // console.log('componentWillMount', that.props, that.state);
-    if (that.props.domain) {
-      that._inject();
-    }
   }
   componentDidMount() {
     const that = this;
     // console.log('componentDidMount', that.props, that.state);
-    if (that.props.thread) {
-      that._init();
-    }
+    that._init();
   }
   componentWillReceiveProps(nextProps) {
     // const that = this;
@@ -86,24 +38,96 @@ class DuoShuo extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     const that = this;
     // console.log('componentDidUpdate', prevProps, that.props, prevState, that.state);
-    if (that.props.thread) {
-      that._init();
-    }
+    that._ready(true);
   }
   componentWillUnmount() {
-    // const that = this;
+    const that = this;
     // console.log('componentWillUnmount', that.props, that.state);
+    that._destroy();
+  }
+  _init() {
+    const that = this;
+    // console.log('_init');
+    if (!window.duoshuoQuery || !window.duoshuoQuery.short_name) {
+      window.duoshuoQuery = {
+        short_name: that.props.domain
+      };
+    } else if (window.duoshuoQuery.short_name !== that.props.domain) {
+      window.duoshuoQuery.short_name = that.props.domain;
+    }
+
+    if (window.DUOSHUO) {
+      return that._ready(true);
+    }
+
+    const ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.charset = 'utf-8';
+    if (ds.readyState) {
+      ds.onreadystatechange = function() {
+        if (ds.readyState === 'loaded' || ds.readyState === 'complete') {
+          ds.onreadystatechange = null;
+          that._ready(false);
+        }
+      };
+    } else {
+      ds.onload = function() {
+        ds.onload = null;
+        that._ready(false);
+      };
+    }
+    ds.src = `${document.location.protocol}//static.duoshuo.com/embed.js?_t=${(new Date()).getTime()}`;
+    const s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ds, s);
+    that.setState({
+      script: ds
+    });
+  }
+  _ready(isForceUpdate) {
+    const that = this;
+    // console.log('_ready');
+    if (window.DUOSHUO && window.DUOSHUO.EmbedThread) {
+      if (that.state.dom) {
+        that.state.dom.parentNode.removeChild(that.state.dom);
+        that.setState({
+          dom: null
+        });
+      }
+      const container = window.document.createElement('div');
+      container.className = 'ds-thread';
+      container.setAttribute('data-thread-key', that.props.thread);
+      container.setAttribute('data-title', window.document.title);
+      container.setAttribute('data-url', window.location.href);
+      that.props.author && container.setAttribute('data-author-key', that.props.author);
+      that.props.image && container.setAttribute('data-image', that.props.image);
+      that.props.position && container.setAttribute('data-form-position', that.props.position);
+      that.props.limit && container.setAttribute('data-limit', that.props.limit);
+      that.props.order && container.setAttribute('data-order', that.props.order);
+      if (isForceUpdate) {
+        window.DUOSHUO.EmbedThread(container);
+      }
+      ReactDOM.findDOMNode(that).append(container);
+      that.setState({
+        dom: container
+      });
+      that.props.onReady && that.props.onReady();
+    }
+  }
+  _destroy() {
+    const that = this;
+    // that.state.script.parentNode.removeChild(that.state.script);
+    that.setState({
+      script: null
+    });
   }
   render() {
     const that = this;
     // console.log('render');
     return (
       <div
-        className="ds-thread"
-        data-thread-key={that.props.thread}
-        data-title={that.props.title}
-        data-url={that.props.url}
-        data-author-key={that.props.author}
+        className="i-duo-shuo"
+        key={that.props.thread}
       ></div>
     );
   }
@@ -112,15 +136,15 @@ class DuoShuo extends React.Component {
 DuoShuo.propTypes = {
   domain: React.PropTypes.string.isRequired,
   thread: React.PropTypes.string.isRequired,
-  title: React.PropTypes.string,
-  url: React.PropTypes.string,
+  image: React.PropTypes.string,
   author: React.PropTypes.string,
+  position: React.PropTypes.string,
+  limit: React.PropTypes.number,
+  order: React.PropTypes.string,
   onReady: React.PropTypes.func
 };
 
 DuoShuo.defaultProps = {
-  title: window.document.title,
-  url: window.location.href,
   onReady: function() {}
 };
 
