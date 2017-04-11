@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 
 class DuoShuo extends React.Component {
   constructor(props) {
@@ -134,14 +135,14 @@ class DuoShuo extends React.Component {
 }
 
 DuoShuo.propTypes = {
-  domain: React.PropTypes.string.isRequired,
-  thread: React.PropTypes.string.isRequired,
-  image: React.PropTypes.string,
-  author: React.PropTypes.string,
-  position: React.PropTypes.string,
-  limit: React.PropTypes.number,
-  order: React.PropTypes.string,
-  onReady: React.PropTypes.func
+  domain: PropTypes.string.isRequired,
+  thread: PropTypes.string.isRequired,
+  image: PropTypes.string,
+  author: PropTypes.string,
+  position: PropTypes.string,
+  limit: PropTypes.number,
+  order: PropTypes.string,
+  onReady: PropTypes.func
 };
 
 DuoShuo.defaultProps = {
