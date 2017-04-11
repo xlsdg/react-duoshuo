@@ -14,28 +14,28 @@ class DuoShuo extends React.Component {
     this._ready = this._ready.bind(this);
     this._destroy = this._destroy.bind(this);
   }
-  componentWillMount() {
+  // componentWillMount() {
     // const that = this;
     // console.log('componentWillMount', that.props, that.state);
-  }
+  // }
   componentDidMount() {
     const that = this;
     // console.log('componentDidMount', that.props, that.state);
     that._init();
   }
-  componentWillReceiveProps(nextProps) {
+  // componentWillReceiveProps(nextProps) {
     // const that = this;
     // console.log('componentWillReceiveProps', that.props, nextProps);
-  }
+  // }
   shouldComponentUpdate(nextProps, nextState) {
     const that = this;
     // console.log('shouldComponentUpdate', that.props, nextProps, that.state, nextState);
     return nextProps.thread !== that.props.thread;
   }
-  componentWillUpdate(nextProps, nextState) {
+  // componentWillUpdate(nextProps, nextState) {
     // const that = this;
     // console.log('componentWillUpdate', that.props, nextProps, that.state, nextState);
-  }
+  // }
   componentDidUpdate(prevProps, prevState) {
     const that = this;
     // console.log('componentDidUpdate', prevProps, that.props, prevState, that.state);
@@ -125,10 +125,14 @@ class DuoShuo extends React.Component {
   render() {
     const that = this;
     // console.log('render');
+    const {
+      thread
+    } = that.props;
+
     return (
       <div
         className="i-duo-shuo"
-        key={that.props.thread}
+        key={thread}
       ></div>
     );
   }
